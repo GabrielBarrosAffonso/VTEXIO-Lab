@@ -1,7 +1,33 @@
 import { Logo } from '../components/Logo'
-import { useState } from 'react'
+import { useState, FormEvent } from 'react'
+import { gql, useMutation } from "@apollo/client";
+
+const CREATE_SUBSCRIBER_MUTATION = gql`
+  mutation CreateSubscriber($name: String!, $email: String!) {
+    createSubscriber(data: {name: $name, email: $email}){
+      id
+    }
+  } 
+`
 
 export function Subscribe() {
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+
+  const [createSubscriber] = useMutation(CREATE_SUBSCRIBER_MUTATION)
+
+  function handleSubscribe(e: FormEvent) {
+    e.preventDefault();
+
+    console.log(name, email)
+
+    createSubscriber({
+      variables: {
+        name,
+        email,
+      }
+    })
+  }
 
   return(
     <div className="min-h-screen bg-blur bg-cover bg-no-repeat flex flex-col items-center">
@@ -17,14 +43,15 @@ export function Subscribe() {
         </div>
         <div className="p-8 bg-gray-700 border border-gray-500 rounded">
           <strong className="text-2xl mb-6 block">Inscreva-se gratuitamente</strong>
-          <form action="" className="flex flex-col gap-2 w-full">
+          <form onSubmit={e => handleSubscribe(e)} className="flex flex-col gap-2 w-full">
             <input
-
+              onChange={e => setName(e.target.value)}
               className="bg-gray-900 rounded px-5 h-14"
               type="text" 
               placeholder="Seu nome completo"
             />
             <input 
+              onChange={e => setEmail(e.target.value)}
               className="bg-gray-900 rounded px-5 h-14"
               type="email" 
               placeholder="Digite seu e-mail"
