@@ -21,11 +21,11 @@ export function Lesson(props: LessonProps) {
 
   return(
     <Link to={`/event/lesson/${props.slug}`} className='group'>
-      <span className="text-gray-300">
+      <span className="text-vtexBlue-900">
         {availableDateFormatted}
       </span>
       <div 
-        className={`rounded border border-gray-500 p-4 mt-2 group-hover:border-green-500 ${isActiveLesson ? 'bg-green-500' : ''}`}
+        className={`rounded border border-vtexGray-300 p-4 mt-2 group-hover:border-rebelPink-900 ${isActiveLesson ? 'bg-rebelPink-900' : ''}`}
       >
         <header className="flex items-center justify-between">
           { isLessonAvailable ? (

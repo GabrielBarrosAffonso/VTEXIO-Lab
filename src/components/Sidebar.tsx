@@ -5,8 +5,8 @@ export function Sidebar() {
   const { data } = useGetLessonsQuery()
 
   return(
-    <aside className="w-[348px] bg-gray-800 p-6 border-l border-gray-600">
-      <h6 className="font-bold text-2xl pb-6 mb-6 border-b border-gray-600 block">
+    <aside className="w-[348px] bg-white p-6 border-l border-vtexGray-300">
+      <h6 className="font-bold text-2xl pb-6 mb-6 border-b border-gray-600 block text-vtexBlue-900">
         Cronograma de aulas
       </h6>
       <div className="flex flex-col gap-8">
