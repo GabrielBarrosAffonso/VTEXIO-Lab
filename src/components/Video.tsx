@@ -36,10 +36,14 @@ export function Video(props: VideoProps) {
           </Player>
         </div>
       </div>
+      <div>
+      <div className="flex-1 bg-rebelPink-900 items-center justify-center">
+        <h1 className="text-2xl font-bold w-full max-w-[1100px] py-5 px-8 text-white">{data.lesson.title}</h1>
+      </div>
+      </div>
       <div className="p-8 max-w-[1100px] mx-auto">
         <div className="flex items-start gap-16">
           <div className="flex-1">
-            <h1 className="text-2xl font-bold text-vtexBlue-900">{data.lesson.title}</h1>
             <p className="mt-4 text-vtexBlue-900 leading-relaxed">
               {data.lesson.description}
             </p>

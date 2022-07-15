@@ -29,7 +29,7 @@ export function Lesson(props: LessonProps) {
       >
         <header className="flex items-center justify-between">
           { isLessonAvailable ? (
-            <span className={`text-sm font-medium flex items-center gap-2 ${!isActiveLesson ? 'text-blue-500' : ''} ${isActiveLesson ? 'text-white' : ''}`}>
+            <span className={`text-sm font-medium flex items-center gap-2 ${!isActiveLesson ? 'text-rebelPink-900' : ''} ${isActiveLesson ? 'text-white' : ''}`}>
               <CheckCircle size={20}/>
               Conteúdo Liberado
             </span> 
