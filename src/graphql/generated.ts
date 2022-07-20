@@ -5588,6 +5588,13 @@ export type GetLessonsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetLessonsQuery = { __typename?: 'Query', lessons: Array<{ __typename?: 'Lesson', lessonType: LessonType, slug: string, title: string, availableAt?: any | null }> };
 
+export type GetUniqueSubscriberQueryVariables = Exact<{
+  email?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type GetUniqueSubscriberQuery = { __typename?: 'Query', subscriber?: { __typename?: 'Subscriber', id: string, name: string, email: string } | null };
+
 
 export const CreateSubscriberDocument = gql`
     mutation CreateSubscriber($name: String!, $email: String!) {
@@ -5702,3 +5709,40 @@ export function useGetLessonsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type GetLessonsQueryHookResult = ReturnType<typeof useGetLessonsQuery>;
 export type GetLessonsLazyQueryHookResult = ReturnType<typeof useGetLessonsLazyQuery>;
 export type GetLessonsQueryResult = Apollo.QueryResult<GetLessonsQuery, GetLessonsQueryVariables>;
+export const GetUniqueSubscriberDocument = gql`
+    query GetUniqueSubscriber($email: String) {
+  subscriber(where: {email: $email}) {
+    id
+    name
+    email
+  }
+}
+    `;
+
+/**
+ * __useGetUniqueSubscriberQuery__
+ *
+ * To run a query within a React component, call `useGetUniqueSubscriberQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUniqueSubscriberQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUniqueSubscriberQuery({
+ *   variables: {
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useGetUniqueSubscriberQuery(baseOptions?: Apollo.QueryHookOptions<GetUniqueSubscriberQuery, GetUniqueSubscriberQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUniqueSubscriberQuery, GetUniqueSubscriberQueryVariables>(GetUniqueSubscriberDocument, options);
+      }
+export function useGetUniqueSubscriberLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUniqueSubscriberQuery, GetUniqueSubscriberQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUniqueSubscriberQuery, GetUniqueSubscriberQueryVariables>(GetUniqueSubscriberDocument, options);
+        }
+export type GetUniqueSubscriberQueryHookResult = ReturnType<typeof useGetUniqueSubscriberQuery>;
+export type GetUniqueSubscriberLazyQueryHookResult = ReturnType<typeof useGetUniqueSubscriberLazyQuery>;
+export type GetUniqueSubscriberQueryResult = Apollo.QueryResult<GetUniqueSubscriberQuery, GetUniqueSubscriberQueryVariables>;
