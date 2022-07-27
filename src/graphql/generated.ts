@@ -1226,6 +1226,7 @@ export type Lesson = Node & {
   __typename?: 'Lesson';
   availableAt?: Maybe<Scalars['DateTime']>;
   challenge?: Maybe<Challenge>;
+  complementaryMaterialString?: Maybe<RichText>;
   /** The time the document was created */
   createdAt: Scalars['DateTime'];
   /** User that created this document */
@@ -1237,7 +1238,10 @@ export type Lesson = Node & {
   history: Array<Version>;
   /** The unique identifier */
   id: Scalars['ID'];
+  lessonNumber: Scalars['Int'];
+  lessonTime: Scalars['String'];
   lessonType: LessonType;
+  materialLink?: Maybe<Scalars['String']>;
   /** The time the document was published. Null on documents in draft stage. */
   publishedAt?: Maybe<Scalars['DateTime']>;
   /** User that last published this document */
@@ -1326,9 +1330,13 @@ export type LessonConnection = {
 export type LessonCreateInput = {
   availableAt?: InputMaybe<Scalars['DateTime']>;
   challenge?: InputMaybe<ChallengeCreateOneInlineInput>;
+  complementaryMaterialString?: InputMaybe<Scalars['RichTextAST']>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   description?: InputMaybe<Scalars['String']>;
+  lessonNumber: Scalars['Int'];
+  lessonTime: Scalars['String'];
   lessonType: LessonType;
+  materialLink?: InputMaybe<Scalars['String']>;
   slug: Scalars['String'];
   teacher?: InputMaybe<TeacherCreateOneInlineInput>;
   title: Scalars['String'];
@@ -1439,6 +1447,40 @@ export type LessonManyWhereInput = {
   id_not_starts_with?: InputMaybe<Scalars['ID']>;
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
+  lessonNumber?: InputMaybe<Scalars['Int']>;
+  /** All values greater than the given value. */
+  lessonNumber_gt?: InputMaybe<Scalars['Int']>;
+  /** All values greater than or equal the given value. */
+  lessonNumber_gte?: InputMaybe<Scalars['Int']>;
+  /** All values that are contained in given list. */
+  lessonNumber_in?: InputMaybe<Array<Scalars['Int']>>;
+  /** All values less than the given value. */
+  lessonNumber_lt?: InputMaybe<Scalars['Int']>;
+  /** All values less than or equal the given value. */
+  lessonNumber_lte?: InputMaybe<Scalars['Int']>;
+  /** All values that are not equal to given value. */
+  lessonNumber_not?: InputMaybe<Scalars['Int']>;
+  /** All values that are not contained in given list. */
+  lessonNumber_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  lessonTime?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  lessonTime_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  lessonTime_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  lessonTime_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values that are not equal to given value. */
+  lessonTime_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  lessonTime_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  lessonTime_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  lessonTime_not_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  lessonTime_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  lessonTime_starts_with?: InputMaybe<Scalars['String']>;
   lessonType?: InputMaybe<LessonType>;
   /** All values that are contained in given list. */
   lessonType_in?: InputMaybe<Array<LessonType>>;
@@ -1446,6 +1488,25 @@ export type LessonManyWhereInput = {
   lessonType_not?: InputMaybe<LessonType>;
   /** All values that are not contained in given list. */
   lessonType_not_in?: InputMaybe<Array<LessonType>>;
+  materialLink?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  materialLink_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  materialLink_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  materialLink_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values that are not equal to given value. */
+  materialLink_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  materialLink_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  materialLink_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  materialLink_not_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  materialLink_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  materialLink_starts_with?: InputMaybe<Scalars['String']>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -1550,8 +1611,14 @@ export enum LessonOrderByInput {
   DescriptionDesc = 'description_DESC',
   IdAsc = 'id_ASC',
   IdDesc = 'id_DESC',
+  LessonNumberAsc = 'lessonNumber_ASC',
+  LessonNumberDesc = 'lessonNumber_DESC',
+  LessonTimeAsc = 'lessonTime_ASC',
+  LessonTimeDesc = 'lessonTime_DESC',
   LessonTypeAsc = 'lessonType_ASC',
   LessonTypeDesc = 'lessonType_DESC',
+  MaterialLinkAsc = 'materialLink_ASC',
+  MaterialLinkDesc = 'materialLink_DESC',
   PublishedAtAsc = 'publishedAt_ASC',
   PublishedAtDesc = 'publishedAt_DESC',
   SlugAsc = 'slug_ASC',
@@ -1572,8 +1639,12 @@ export enum LessonType {
 export type LessonUpdateInput = {
   availableAt?: InputMaybe<Scalars['DateTime']>;
   challenge?: InputMaybe<ChallengeUpdateOneInlineInput>;
+  complementaryMaterialString?: InputMaybe<Scalars['RichTextAST']>;
   description?: InputMaybe<Scalars['String']>;
+  lessonNumber?: InputMaybe<Scalars['Int']>;
+  lessonTime?: InputMaybe<Scalars['String']>;
   lessonType?: InputMaybe<LessonType>;
+  materialLink?: InputMaybe<Scalars['String']>;
   slug?: InputMaybe<Scalars['String']>;
   teacher?: InputMaybe<TeacherUpdateOneInlineInput>;
   title?: InputMaybe<Scalars['String']>;
@@ -1599,8 +1670,12 @@ export type LessonUpdateManyInlineInput = {
 
 export type LessonUpdateManyInput = {
   availableAt?: InputMaybe<Scalars['DateTime']>;
+  complementaryMaterialString?: InputMaybe<Scalars['RichTextAST']>;
   description?: InputMaybe<Scalars['String']>;
+  lessonNumber?: InputMaybe<Scalars['Int']>;
+  lessonTime?: InputMaybe<Scalars['String']>;
   lessonType?: InputMaybe<LessonType>;
+  materialLink?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
   videoId?: InputMaybe<Scalars['String']>;
 };
@@ -1728,6 +1803,40 @@ export type LessonWhereInput = {
   id_not_starts_with?: InputMaybe<Scalars['ID']>;
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
+  lessonNumber?: InputMaybe<Scalars['Int']>;
+  /** All values greater than the given value. */
+  lessonNumber_gt?: InputMaybe<Scalars['Int']>;
+  /** All values greater than or equal the given value. */
+  lessonNumber_gte?: InputMaybe<Scalars['Int']>;
+  /** All values that are contained in given list. */
+  lessonNumber_in?: InputMaybe<Array<Scalars['Int']>>;
+  /** All values less than the given value. */
+  lessonNumber_lt?: InputMaybe<Scalars['Int']>;
+  /** All values less than or equal the given value. */
+  lessonNumber_lte?: InputMaybe<Scalars['Int']>;
+  /** All values that are not equal to given value. */
+  lessonNumber_not?: InputMaybe<Scalars['Int']>;
+  /** All values that are not contained in given list. */
+  lessonNumber_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  lessonTime?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  lessonTime_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  lessonTime_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  lessonTime_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values that are not equal to given value. */
+  lessonTime_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  lessonTime_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  lessonTime_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  lessonTime_not_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  lessonTime_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  lessonTime_starts_with?: InputMaybe<Scalars['String']>;
   lessonType?: InputMaybe<LessonType>;
   /** All values that are contained in given list. */
   lessonType_in?: InputMaybe<Array<LessonType>>;
@@ -1735,6 +1844,25 @@ export type LessonWhereInput = {
   lessonType_not?: InputMaybe<LessonType>;
   /** All values that are not contained in given list. */
   lessonType_not_in?: InputMaybe<Array<LessonType>>;
+  materialLink?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  materialLink_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  materialLink_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  materialLink_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values that are not equal to given value. */
+  materialLink_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  materialLink_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  materialLink_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  materialLink_not_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  materialLink_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  materialLink_starts_with?: InputMaybe<Scalars['String']>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -5581,12 +5709,12 @@ export type GetLessonBySlugQueryVariables = Exact<{
 }>;
 
 
-export type GetLessonBySlugQuery = { __typename?: 'Query', lesson?: { __typename?: 'Lesson', videoId: string, title: string, description?: string | null, teacher?: { __typename?: 'Teacher', bio: string, name: string, avatarURL: string } | null } | null };
+export type GetLessonBySlugQuery = { __typename?: 'Query', lesson?: { __typename?: 'Lesson', videoId: string, title: string, description?: string | null, lessonNumber: number, lessonTime: string, materialLink?: string | null, teacher?: { __typename?: 'Teacher', bio: string, name: string, avatarURL: string } | null } | null };
 
 export type GetLessonsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetLessonsQuery = { __typename?: 'Query', lessons: Array<{ __typename?: 'Lesson', lessonType: LessonType, slug: string, title: string, availableAt?: any | null }> };
+export type GetLessonsQuery = { __typename?: 'Query', lessons: Array<{ __typename?: 'Lesson', lessonType: LessonType, slug: string, title: string, availableAt?: any | null, lessonTime: string, lessonNumber: number }> };
 
 export type GetUniqueSubscriberQueryVariables = Exact<{
   email?: InputMaybe<Scalars['String']>;
@@ -5641,6 +5769,9 @@ export const GetLessonBySlugDocument = gql`
       name
       avatarURL
     }
+    lessonNumber
+    lessonTime
+    materialLink
   }
 }
     `;
@@ -5679,6 +5810,8 @@ export const GetLessonsDocument = gql`
     slug
     title
     availableAt
+    lessonTime
+    lessonNumber
   }
 }
     `;
