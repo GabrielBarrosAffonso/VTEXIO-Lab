@@ -1226,7 +1226,6 @@ export type Lesson = Node & {
   __typename?: 'Lesson';
   availableAt?: Maybe<Scalars['DateTime']>;
   challenge?: Maybe<Challenge>;
-  complementaryMaterialString?: Maybe<RichText>;
   /** The time the document was created */
   createdAt: Scalars['DateTime'];
   /** User that created this document */
@@ -1330,7 +1329,6 @@ export type LessonConnection = {
 export type LessonCreateInput = {
   availableAt?: InputMaybe<Scalars['DateTime']>;
   challenge?: InputMaybe<ChallengeCreateOneInlineInput>;
-  complementaryMaterialString?: InputMaybe<Scalars['RichTextAST']>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   description?: InputMaybe<Scalars['String']>;
   lessonNumber: Scalars['Int'];
@@ -1639,7 +1637,6 @@ export enum LessonType {
 export type LessonUpdateInput = {
   availableAt?: InputMaybe<Scalars['DateTime']>;
   challenge?: InputMaybe<ChallengeUpdateOneInlineInput>;
-  complementaryMaterialString?: InputMaybe<Scalars['RichTextAST']>;
   description?: InputMaybe<Scalars['String']>;
   lessonNumber?: InputMaybe<Scalars['Int']>;
   lessonTime?: InputMaybe<Scalars['String']>;
@@ -1670,7 +1667,6 @@ export type LessonUpdateManyInlineInput = {
 
 export type LessonUpdateManyInput = {
   availableAt?: InputMaybe<Scalars['DateTime']>;
-  complementaryMaterialString?: InputMaybe<Scalars['RichTextAST']>;
   description?: InputMaybe<Scalars['String']>;
   lessonNumber?: InputMaybe<Scalars['Int']>;
   lessonTime?: InputMaybe<Scalars['String']>;
@@ -5704,6 +5700,13 @@ export type CreateSubscriberMutationVariables = Exact<{
 
 export type CreateSubscriberMutation = { __typename?: 'Mutation', createSubscriber?: { __typename?: 'Subscriber', id: string } | null };
 
+export type PublishMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type PublishMutation = { __typename?: 'Mutation', publishSubscriber?: { __typename?: 'Subscriber', id: string } | null };
+
 export type GetLessonBySlugQueryVariables = Exact<{
   slug?: InputMaybe<Scalars['String']>;
 }>;
@@ -5758,6 +5761,39 @@ export function useCreateSubscriberMutation(baseOptions?: Apollo.MutationHookOpt
 export type CreateSubscriberMutationHookResult = ReturnType<typeof useCreateSubscriberMutation>;
 export type CreateSubscriberMutationResult = Apollo.MutationResult<CreateSubscriberMutation>;
 export type CreateSubscriberMutationOptions = Apollo.BaseMutationOptions<CreateSubscriberMutation, CreateSubscriberMutationVariables>;
+export const PublishDocument = gql`
+    mutation Publish($id: ID!) {
+  publishSubscriber(where: {id: $id}, to: PUBLISHED) {
+    id
+  }
+}
+    `;
+export type PublishMutationFn = Apollo.MutationFunction<PublishMutation, PublishMutationVariables>;
+
+/**
+ * __usePublishMutation__
+ *
+ * To run a mutation, you first call `usePublishMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `usePublishMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [publishMutation, { data, loading, error }] = usePublishMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function usePublishMutation(baseOptions?: Apollo.MutationHookOptions<PublishMutation, PublishMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<PublishMutation, PublishMutationVariables>(PublishDocument, options);
+      }
+export type PublishMutationHookResult = ReturnType<typeof usePublishMutation>;
+export type PublishMutationResult = Apollo.MutationResult<PublishMutation>;
+export type PublishMutationOptions = Apollo.BaseMutationOptions<PublishMutation, PublishMutationVariables>;
 export const GetLessonBySlugDocument = gql`
     query GetLessonBySlug($slug: String) {
   lesson(where: {slug: $slug}) {

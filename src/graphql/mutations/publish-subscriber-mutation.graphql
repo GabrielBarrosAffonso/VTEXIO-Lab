@@ -1,0 +1,5 @@
+mutation Publish($id: ID!){
+  publishSubscriber(where: {id: $id }, to: PUBLISHED) {
+    id
+  }
+}

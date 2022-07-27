@@ -1,6 +1,7 @@
 import { useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCreateSubscriberMutation } from "../graphql/generated";
+import { usePublishMutation } from "../graphql/generated"
 
 export function EmailSubscribe() {
 
@@ -9,7 +10,8 @@ export function EmailSubscribe() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
 
-  const [createSubscriber, { error }] = useCreateSubscriberMutation()
+  const [createSubscriber, { data, error }] = useCreateSubscriberMutation()
+  const [publishSubscriber] = usePublishMutation()
 
   async function handleSubscribe(e: FormEvent) {
     e.preventDefault();
@@ -20,9 +22,18 @@ export function EmailSubscribe() {
         email,
       }
     })
+  }
 
+  if(data?.createSubscriber?.id != undefined){
+    publishSubscriber({
+      variables: {
+        id: data.createSubscriber?.id
+      }
+    })
+    
     navigate('/event/lesson/abertura-do-evento')
   }
+
   
   return(
     <section className="flex flex-1 bg-vtexbg items-center justify-center">
