@@ -17,8 +17,6 @@ export function EmailLogin() {
     await getSubscriber({variables: {email}})
   }
 
-  console.log(loginData)
-
   useEffect(() => {
     if(loginData != undefined){
       localStorage.setItem("loginId", loginData)
@@ -63,6 +61,7 @@ export function EmailLogin() {
             >
               Logar
             </button>
+            <a className="mt-3 block text-center text-rebelPink-900 underline" href="/subscribe">Quero me cadastrar</a>
         </form>
       </article>
 

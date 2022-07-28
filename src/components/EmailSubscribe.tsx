@@ -78,6 +78,7 @@ export function EmailSubscribe() {
             >
               Enviar
             </button>
+            <a className="mt-3 block text-center text-rebelPink-900 underline" href="/">Ja tenho um usuário</a>
         </form>
       </article>
 

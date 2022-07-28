@@ -3,7 +3,9 @@ import { ArrowRight } from "phosphor-react";
 
 import '@vime/core/themes/default.css'
 import { gql, useQuery } from "@apollo/client";
+import { useNavigate } from "react-router-dom";
 import { useGetLessonBySlugQuery } from "../graphql/generated";
+import { useEffect } from  "react"
 
 
 interface VideoProps {
@@ -12,11 +14,19 @@ interface VideoProps {
 
 export function Video(props: VideoProps) {
   const { lessonSlug } = props
+  const navigate = useNavigate()
+  const loginStorage = localStorage.getItem("loginId")
   const { data } = useGetLessonBySlugQuery({    
     variables: {
       slug: lessonSlug
     }}
   )
+
+  useEffect(() => {  
+    if(loginStorage == null){
+      navigate('/')
+    }
+  }, [loginStorage])
 
   if(!data || !data.lesson) {
     return (

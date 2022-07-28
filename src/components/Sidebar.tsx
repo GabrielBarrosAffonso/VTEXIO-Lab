@@ -3,9 +3,10 @@ import { Lesson } from "./Lesson";
 
 export function Sidebar() {
   const { data } = useGetLessonsQuery()
+  const disableClasses = localStorage.getItem("loginId") == null ? 'pointer-events-none opacity-20' : ''
 
   return(
-    <aside className="w-[348px] bg-white p-6 border-l border-vtexGray-300">
+    <aside className={`${disableClasses} w-[348px] bg-white p-6 border-l border-vtexGray-300`}>
       <h6 className="font-bold text-2xl pb-6 mb-6 border-b border-gray-600 block text-vtexBlue-900">
         Cronograma de aulas
       </h6>
