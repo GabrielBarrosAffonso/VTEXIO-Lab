@@ -9,27 +9,46 @@ export function EmailLogin() {
   const [email, setEmail] = useState('')
 
   const [getSubscriber, {error, data}] = useGetUniqueSubscriberLazyQuery()
+  const loginData = data?.subscriber?.id
+  const loginStorage = localStorage.getItem("loginId")
 
   async function handleSubscribe(e: FormEvent) {
     e.preventDefault();
     await getSubscriber({variables: {email}})
-    console.log(data)
   }
+
+  console.log(loginData)
+
+  useEffect(() => {
+    if(loginData != undefined){
+      localStorage.setItem("loginId", loginData)
+      navigate('/event/lesson/aula-0-estruturacao-do-treinamento-de-vtex-io')
+    }
+  
+    if(loginStorage != null){
+      navigate('/event/lesson/aula-0-estruturacao-do-treinamento-de-vtex-io')
+    }
+  }, [loginData, loginStorage])
   
   return(
     <section className="flex flex-1 bg-vtexbg items-center justify-center">
       <article className='bg-white text-vtexBlue-900 w-full max-w-[550px] p-16'>
         <h1 className="text-2xl font-bold py-3">Faça seu Login 🚀</h1>
-        { error ? 
+        { error &&
           (
             <div className="p-2 bg-red-300">
-              <span className="text-red-600">Ocorreu um erro! Caso já tenha um usuário acesse a nossa página de <a href="/" className="text-red-600 underline">Login</a></span>
+              <span className="text-red-600">Ocorreu um erro! Recarregue a página e tente novamente <a href="/" className="text-red-600 underline">Login</a></span>
             </div>
-          ) :
-          (<div></div>)
+          )
+        }
+        {
+          data?.subscriber === null && (
+            <div className="p-2 bg-red-300">
+              <span className="text-red-600">Não encontramos nenhum usuário com esse nome, caso ainda não tenha, faça seu <a href="/subscribe" className="text-red-600 underline">Cadastro</a></span>
+            </div>
+          )
         }
         <form onSubmit={e => handleSubscribe(e)} className="py-3" action="">
-          {`${data?.subscriber?.email}`}
           <div className="flex flex-row justify-between">
             <input
               onChange={e => setEmail(e.target.value)}

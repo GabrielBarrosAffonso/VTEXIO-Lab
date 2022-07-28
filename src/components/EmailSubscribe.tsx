@@ -1,4 +1,4 @@
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCreateSubscriberMutation } from "../graphql/generated";
 import { usePublishMutation } from "../graphql/generated"
@@ -13,6 +13,9 @@ export function EmailSubscribe() {
   const [createSubscriber, { data, error }] = useCreateSubscriberMutation()
   const [publishSubscriber] = usePublishMutation()
 
+  const loginData = data?.createSubscriber?.id
+  const loginStorage = localStorage.getItem("loginId")
+
   async function handleSubscribe(e: FormEvent) {
     e.preventDefault();
 
@@ -24,17 +27,23 @@ export function EmailSubscribe() {
     })
   }
 
-  if(data?.createSubscriber?.id != undefined){
-    publishSubscriber({
-      variables: {
-        id: data.createSubscriber?.id
-      }
-    })
-    
-    navigate('/event/lesson/abertura-do-evento')
-  }
-
+  useEffect(() => {
+    if(loginData != undefined){
+      publishSubscriber({
+        variables: {
+          id: loginData
+        }
+      })
+      
+      localStorage.setItem("loginId", loginData)
+      navigate('/event/lesson/aula-0-estruturacao-do-treinamento-de-vtex-io')
+    }
   
+    if(loginStorage != null){
+      navigate('/event/lesson/aula-0-estruturacao-do-treinamento-de-vtex-io')
+    }
+  }, [loginData, loginStorage])
+
   return(
     <section className="flex flex-1 bg-vtexbg items-center justify-center">
       <article className='bg-white text-vtexBlue-900 w-full max-w-[550px] p-16'>
