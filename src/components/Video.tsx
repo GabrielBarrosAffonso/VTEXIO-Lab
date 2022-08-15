@@ -1,5 +1,6 @@
 import { DefaultUi, Player, Youtube } from "@vime/react";
 import { ArrowRight } from "phosphor-react";
+import { useMediaQuery } from "react-responsive";
 
 import '@vime/core/themes/default.css'
 import { gql, useQuery } from "@apollo/client";
@@ -21,6 +22,7 @@ export function Video(props: VideoProps) {
       slug: lessonSlug
     }}
   )
+  const isPortrait = useMediaQuery({ query: '(orientation: portrait)' })
 
   useEffect(() => {  
     if(loginStorage == null){
@@ -57,7 +59,7 @@ export function Video(props: VideoProps) {
             <p className=" text-vtexBlue-900 leading-relaxed p-3 rounded-sm bg-slate-100">
               {data.lesson.description}
             </p>
-            <div className="flex justify-between pt-5 mt-5">
+            <div className={`${isPortrait ? 'flex-col' : 'flex-row'} flex justify-between pt-5 mt-5`}>
             {data.lesson.teacher && (
               <div className="flex items-center gap-4">
                 <img
@@ -70,7 +72,7 @@ export function Video(props: VideoProps) {
                   <span className="text-sm block text-vtexBlue-900">{data.lesson.teacher.bio}</span>
                 </div>
               </div>)}
-              <div className="w-1/3">
+              <div className={`${isPortrait ? "w-[100%] mt-3" : "w-1/3"}`}>
                 <a target="_blank" href={`${data.lesson.materialLink}`} className="bg-white rounded overflow-hidden flex hover:bg-slate-100 transition-colors">
                   <div className="bg-rebelPink-900 h-full p-4 flex items-center">
                     <ArrowRight size={40}/>

@@ -2,6 +2,7 @@ import { useState, FormEvent, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCreateSubscriberMutation } from "../graphql/generated";
 import { usePublishMutation } from "../graphql/generated"
+import { useMediaQuery } from 'react-responsive'
 
 export function EmailSubscribe() {
 
@@ -9,6 +10,8 @@ export function EmailSubscribe() {
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
+
+  const isPortrait = useMediaQuery({ query: '(orientation: portrait)' })
 
   const [createSubscriber, { data, error }] = useCreateSubscriberMutation()
   const [publishSubscriber] = usePublishMutation()
@@ -58,16 +61,16 @@ export function EmailSubscribe() {
           (<div></div>)
         }
         <form onSubmit={e => handleSubscribe(e)} className="py-3" action="">
-          <div className="flex flex-row justify-between">
+          <div className={`${isPortrait ? "flex-col" : "flex-row" } flex flex-row justify-between`}>
             <input
             onChange={e => setName(e.target.value)}
-              className="bg-white border rounded px-5 h-14 w-[49%]"
+              className={`${isPortrait ? "w-[100%] mb-2" : "w-[49%]" } bg-white border rounded px-5 h-14`}
               type="text"
               placeholder="@ VTEX no Slack"
             />
             <input
               onChange={e => setEmail(e.target.value)}
-              className="bg-white border rounded px-5 h-14 w-[49%]"
+              className={`${isPortrait ? "w-[100%]" : "w-[49%]" } bg-white border rounded px-5 h-14`}
               type="email"
               placeholder="Digite seu e-mail VTEX"
             />
