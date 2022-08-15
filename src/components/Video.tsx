@@ -20,7 +20,10 @@ export function Video(props: VideoProps) {
   const { data } = useGetLessonBySlugQuery({    
     variables: {
       slug: lessonSlug
-    }}
+    },
+    notifyOnNetworkStatusChange:true,
+    fetchPolicy: 'network-only',
+}
   )
   const isPortrait = useMediaQuery({ query: '(orientation: portrait)' })
 
